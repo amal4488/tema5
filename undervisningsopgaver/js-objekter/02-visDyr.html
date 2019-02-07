@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+
+
+    <div id="dyr"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded",
+            start);
+
+        function start() {
+            console.log("start");
+            document.querySelector("#dyr").innerHTML = ` <p>Dyr: ${dyr.dyr}, Type ${dyr.type}, Levested: ${dyr.levested}</p>`;
+            document.querySelector("#dyr").innerHTML += `<img src=${dyr.billede} alt="Gris">`;
+        };
+
+        let dyr = {
+            "dyr": "Gris",
+            "type": "Pattedyr",
+            "billede": "http://helf-kea.dk/test/gris.png",
+            "levested": "svinefarm"
+        };
+
+        console.log(dyr);
+    </script>
+</body>
+
+</html>
