@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        #liste {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 1vw;
+
+        }
+
+        .minedyr {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="liste"></div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        let alleDyr = [];
+        async function start() {
+            const myJson = await fetch("dyr.json");
+            alleDyr = await myJson.json();
+
+            visDyr();
+        }
+
+
+
+
+        //        document.addEventListener("DOMContentLoaded", start);
+
+        function visDyr() {
+            const dest = document.querySelector("#liste");
+            alleDyr.forEach(dyr => {
+                dest.innerHTML += `<div class="minedyr"><h3>${dyr.navn}</h3> <p>${dyr.type} fra ${dyr.levested}</p> <img src=${dyr.billede} alt=${dyr.navn}></div>`
+            })
+        }
+    </script>
+</body>
+</html>
