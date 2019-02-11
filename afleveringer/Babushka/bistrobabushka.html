@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        #liste {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            margin: 1rem;
+            grid-gap: 2rem;
+
+
+        }
+
+        a {
+            color: #746e68;
+        }
+
+        h2 {
+            color: #746e68;
+        }
+
+
+        body {
+            background: white;
+
+        }
+
+        img {
+            width: 100%;
+        }
+
+        @media only screen and (min-width:600px) {
+            #liste {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media only screen and (min-width:768px) {
+            #liste {
+                grid-template-columns: repeat(3, 1fr);
+
+            }
+        }
+
+        .menuramme {
+            border: 1px solid #d8d8ce;
+            background-color: #cbc9c6;
+
+
+        }
+
+        .menuramme:nth-child(even) {
+            background: #f0eeee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="liste"></div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        let alleRetter = [];
+        async function start() {
+            const myJson = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+            alleRetter = await myJson.json();
+
+            visRet();
+        }
+
+
+
+
+        //        document.addEventListener("DOMContentLoaded", start);
+
+        function visRet() {
+            const dest = document.querySelector("#liste");
+            alleRetter.forEach(ret => {
+                dest.innerHTML += `<div class="menuramme"><img src=imgs/small/${ret.billede}-sm.jpg alt=${ret.navn}><h2>${ret.navn}</h2> <br><p>${ret.kort}</p> <br> <p>Pris: ${ret.pris},-</p></div>`;
+            })
+        }
+    </script>
+</body>
+
+</html>
