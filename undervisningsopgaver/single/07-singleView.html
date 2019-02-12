@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+
+
+    <style>
+        a {
+            color: #746e68;
+        }
+
+        h2 {
+            color: #746e68;
+        }
+
+
+        body {
+            background: #adacab;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        img {
+            width: 100%;
+        }
+
+        @media only screen and (min-width:600px) {
+            #liste {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media only screen and (min-width:768px) {
+            #liste {
+                grid-template-columns: repeat(3, 1fr);
+
+            }
+        }
+
+        .personramme {
+            border: 1px solid #d8d8ce;
+            background-color: #d3c9bd;
+
+        }
+
+
+        .menu {
+            text-align: center;
+        }
+
+        .valgt {
+            background-color: pink;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /*
+        #popup {
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: hsla(0, 15%, 48, 0.5);
+            display: none;
+        }
+*/
+
+        #single {
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: hsla(0, 15%, 48%, 0.5);
+            overflow: scroll;
+        }
+
+        #indhold {
+            min-height: 50vh;
+            background-color: white;
+            width: 70vw;
+            margin: 4rem auto;
+
+        }
+
+        #luk {
+            position: fixed;
+            right: 2rem;
+        }
+
+        #luk button {
+            font-size: 2rem;
+            padding: 1rem 2rem;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <main id="single">
+        <div id="luk">
+            <button>
+                << </button> </div> <div id="indhold">
+        </div>
+
+    </main>
+
+
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let github = urlParams.get("github");
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        let allePersoner = [];
+
+
+        async function start() {
+            const myJson = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+            allePersoner = await myJson.json();
+            visPersoner();
+        }
+
+        function visPersoner() {
+            let dest = document.querySelector("#indhold")
+            dest.innerHTML = "";
+            allePersoner.forEach(person => {
+                if (person.github == github) {
+                    let template = `
+                   <div class="personramme"> <h2>${person.navn}</h2> <img src=${person.billede} alt=${person.navn}><br> <a href="https://github.com/${person.github}">${person.github} </a> <p>Alder: ${person.alder}</p> <p>Hold: ${person.hold}</p></div>`;
+                    dest.insertAdjacentHTML("beforeend", template);
+                    dest.lastElementChild.addEventListener("click", () => {
+                        visPersoner(person);
+                    });
+                }
+            })
+        }
+
+        document.querySelector("#single button").addEventListener("click", () => {
+            location.href = "05-kald.html"
+        })
+    </script>
+
+</body>
+
+</html>
