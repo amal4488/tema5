@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+
+    <style>
+        a {
+            color: #746e68;
+        }
+
+        h2 {
+            color: #746e68;
+        }
+
+
+        body {
+            background: #adacab;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        img {
+            width: 100%;
+        }
+
+        @media only screen and (min-width:600px) {
+            #liste {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media only screen and (min-width:768px) {
+            #liste {
+                grid-template-columns: repeat(3, 1fr);
+
+            }
+        }
+
+        .personramme {
+            border: 1px solid #d8d8ce;
+            background-color: #d3c9bd;
+
+        }
+
+
+        .menu {
+            text-align: center;
+        }
+
+        .valgt {
+            background-color: pink;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /*
+        #popup {
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: hsla(0, 15%, 48, 0.5);
+            display: none;
+        }
+*/
+
+        #single {
+            width: 100vw;
+            height: 100vh;
+            background-color: hsla(0, 15%, 48%, 0.5);
+        }
+
+        #indhold {
+            min-height: 50vh;
+            background-color: white;
+            width: 70vw;
+            margin: 4rem auto;
+
+        }
+
+        #luk {}
+
+        #luk button {
+            font-size: 2rem;
+            padding: 1rem 2rem;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <main id="single">
+        <div id="luk">
+            <button>
+                << </button> <div id="indhold">
+        </div>
+        </div>
+    </main>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        let allePersoner = [];
+        let filter = "alle";
+        const dest = document.querySelector("#liste");
+
+        async function start() {
+            const myJson = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+            allePersoner = await myJson.json();
+            allePersoner.sort((a, b) => {
+                return a.navn.localeCompare(b.navn)
+            });
+            visPersoner();
+        }
+
+        function visPersoner() {
+            dest.innerHTML = "";
+            allePersoner.forEach(person => {
+                if (filter == "alle" || filter == person.hold) {
+                    let template =
+                        //                    dest.innerHTML +=
+                        `<div class="personramme"> <h2>${person.navn}</h2> <img src=${person.billede} alt=${person.navn}><br> <p>Alder: ${person.alder}</p> <br><p>Hold: ${person.hold}</p><br>
+<a href="https://github.com/${person.github}">${person.github} </a> </div>`;
+                    dest.insertAdjacentHTML("beforeend", template);
+                    dest.lastElementChild.addEventListener("click", () => {
+                        visSingle(person);
+
+                    });
+
+                    function visSingle(person) {
+                        document.querySelector("#indhold").innerHTML = `<div class="personramme"> <h2>${person.navn}</h2> <img src=${person.billede} alt=${person.navn}><br> <p>Alder: ${person.alder}</p> <br><p>Hold: ${person.hold}</p><br>
+<a href="https://github.com/${person.github}">${person.github} </a> </div>`;
+                        document.querySelector("#popup").style.display = "block";
+                        document.querySelector("#popup #luk").addEventListener("click", close);
+
+                    }
+
+                    function close() {
+                        document.querySelector("#popup").style.display = "none";
+                    }
+
+
+                }
+            })
+        }
+
+
+
+        document.querySelectorAll(".filter").forEach(elm => {
+            elm.addEventListener("click", filtrering);
+        })
+
+
+
+        function filtrering() {
+            filter = this.getAttribute("data-hold");
+            document.querySelector("h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            visPersoner();
+        }
+        start();
+
+    </script>
+</body>
+
+</html>
