@@ -99,6 +99,7 @@ font-size: 2rem;
 padding: 1rem 2rem;
 }
 */
+
     </style>
 
 </head>
@@ -154,7 +155,7 @@ padding: 1rem 2rem;
 <a href="https://github.com/${person.github}">${person.github} </a> </div>`;
                     dest.insertAdjacentHTML("beforeend", template);
                     dest.lastElementChild.addEventListener("click", () => {
-                        location.href = "06-single.html?github" + person.github;
+                        location.href = "07-singleView.html?github=" + person.github;
 
                     });
 
@@ -182,6 +183,7 @@ padding: 1rem 2rem;
             visPersoner();
         }
         start();
+
     </script>
 </body>
 
